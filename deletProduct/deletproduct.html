@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delete Product</title>
+    <link rel="stylesheet" href="./deletproduct.css" />
+  </head>
+  <body>
+    <a href="../index.html" class="back">← Back</a>
+    <h1>Delete Product</h1>
+
+    <form id="deleteForm">
+      <label>Product ID</label>
+      <input type="number" name="id" required />
+
+      <button type="submit">Delete Product</button>
+    </form>
+
+    <script>
+      const form = document.getElementById("deleteForm");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+
+        fetch("http://23.94.153.158/api/product/deleteProduct.php", {
+          method: "POST",
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.status === "success") {
+              alert("Product deleted successfully");
+              form.reset();
+            } else {
+              alert("Error: " + data.message);
+            }
+          })
+          .catch((err) => {
+            console.error("Fetch error:", err);
+            alert("Something went wrong. Use Live Server or localhost.");
+          });
+      });
+    </script>
+  </body>
+</html>
